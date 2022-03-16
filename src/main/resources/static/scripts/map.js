@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     let Map, objectManager, pointsArr;
-    let namePointsArr = [];
+
+    let obj = {}
 
 
     function init(){
@@ -31,6 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
         $.ajax({
             url: 'http://localhost:8082/rest/getpoints'
         }).done(function(data) {
+            console.log(JSON.parse(data))
+            console.log(data.features)
             objectManager.add(data);
         });
 
@@ -81,11 +84,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
         });
-    }
-
-    let obj = {
-        type: "FeatureCollection",
-        features: []
     }
 
     ymaps.ready(init);
