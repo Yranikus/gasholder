@@ -17,4 +17,15 @@ public class UIController {
         return "account";
     }
 
+    @GetMapping("/up")
+    public String load(){
+        return "index";
+    }
+
+    @GetMapping("/map")
+    public String map(){
+        return "map";
+    }
+
+
 }

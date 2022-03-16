@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Rock+Salt' rel='stylesheet' type='text/css'>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <title>Input</title>
+    <link rel="stylesheet" href="stylesheets/style.css" type="text/css">
+</head>
+<body>
+<div class="example-1">
+    <div class="square">
+        <div class="p">Загрузить список студентов</div>
+        <form method="post" action="rest/upload" enctype="multipart/form-data">
+            <input type="file" id="upload_file" hidden="hidden" name="file">
+            <div id="upload_btn">Загрузить файл</div>
+            <span id="upload_text">Файл не выбран</span>
+            <button type="submit">отправить</button>
+        </form>
+    </div>
+    <div class="square">
+        <div class="p">Загрузить список команд</div>
+        <form method="post" action="/uploadTeams" enctype="multipart/form-data">
+            <input type="file" id="upload_file2" hidden="hidden" name="file">
+            <div id="upload_btn2">Загрузить файл</div>
+            <span id="upload_text2">Файл не выбран</span>
+            <button type="submit">отправить</button>
+        </form>
+    </div>
+</div>
+<script src="scripts/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+#upload_btn{
+    padding: 10px;
+    background-color: dodgerblue;
+    border: 2px solid black;
+    border-radius: 5px;
+    color: white;
+    width: fit-content;
+}
+
+
+#upload_text{
+    font-family: sans-serif;
+    margin-left: 10px;
+    font-size: 15px;
+    color:  #aaa;
+}
+
+#upload_btn2{
+    padding: 10px;
+    background-color: dodgerblue;
+    border: 2px solid black;
+    border-radius: 5px;
+    color: white;
+    width: fit-content;
+}
+
+
+#upload_text2{
+    font-family: sans-serif;
+    margin-left: 10px;
+    font-size: 15px;
+    color:  #aaa;
+}
+
+
+.square{
+    padding: 10px;
+    margin: 20px;
+    float: left;
+    width: fit-content;
+    border: 2px solid blueviolet;
+}

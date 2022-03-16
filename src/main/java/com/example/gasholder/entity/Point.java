@@ -2,6 +2,7 @@ package com.example.gasholder.entity;
 
 public class Point {
 
+    private int id;
     private String name;
     private Double latitude;
     private Double longitude;
@@ -14,6 +15,14 @@ public class Point {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -38,5 +47,15 @@ public class Point {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    @Override
+    public String toString() {
+        return "Point{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                '}';
     }
 }
