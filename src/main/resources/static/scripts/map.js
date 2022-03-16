@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         $.ajax({
             url: 'http://localhost:8082/rest/getpoints'
         }).done(function(data) {
-            console.log(JSON.parse(data))
+            console.log(data.json);
             console.log(data.features)
             objectManager.add(data);
         });

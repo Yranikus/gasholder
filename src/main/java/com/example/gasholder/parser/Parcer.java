@@ -2,6 +2,7 @@ package com.example.gasholder.parser;
 
 
 import com.example.gasholder.dao.PointsDAO;
+import com.example.gasholder.entity.Discription;
 import com.example.gasholder.entity.Point;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -31,15 +32,21 @@ public class Parcer {
                 String[] kek = name.split("\\.");
                 name = kek[0];
             }
+            String AGZU = sheet.getRow(i).getCell(6).toString();
+            if (AGZU.contains(".")) {
+                String[] kek = AGZU.split("\\.");
+                AGZU = kek[0];
+            }
+            Discription discription = new Discription(sheet.getRow(i).getCell(4).getStringCellValue(),
+                    sheet.getRow(i).getCell(5).getStringCellValue(), AGZU, sheet.getRow(i).getCell(7).getStringCellValue());
             System.out.println(name);
             System.out.println(i);
             Point point = new Point(name,
                     Double.parseDouble(gsp[0]), Double.parseDouble(gsp[1]));
             try {
-                pointsDAO.save(point);
+                pointsDAO.save(point, discription);
             }
             catch (Exception e){
-
             }
             i++;
         }
