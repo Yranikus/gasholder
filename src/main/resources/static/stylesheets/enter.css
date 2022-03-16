@@ -1,0 +1,68 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500&display=swap");
+body {
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.enterWrapper {
+  /*background-color: mediumvioletred;*/
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.loginForm {
+  width: fit-content;
+  margin: 15% auto 0 auto;
+}
+
+.loginFormTable {
+  border-radius: 10px;
+  border: #6F17AD solid 5px;
+  padding: 10px 30px;
+  height: auto;
+}
+.loginFormTable .formHeader {
+  text-align: center;
+  font-size: large;
+  font-weight: 500;
+}
+.loginFormTable td {
+  display: block;
+  margin: 0.5em 0;
+}
+.loginFormTable td input {
+  padding: 0.5em 0.6em;
+  border: rgba(0, 0, 0, 0.5) solid 2px;
+  border-radius: 3px;
+}
+.loginFormTable td input::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+}
+.loginFormTable td input:focus-visible {
+  outline: #6F17AD auto 1px;
+  transition: all 0.3s;
+  box-shadow: 0 0 3px #6F17AD;
+}
+.loginFormTable button {
+  box-sizing: border-box;
+  font-weight: 400;
+  font-size: large;
+  color: black;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0.3em 0;
+  border-radius: 5px;
+  border: #2D7D10 solid 2px;
+}
+.loginFormTable button:hover {
+  background: #2D7D10;
+  color: white;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+/*# sourceMappingURL=enter.css.map */
