@@ -2,7 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let Map, objectManager, pointsArr;
 
-    let obj = {}
+    let obj = {},
+        namePointsArr = []
 
 
     function init(){
@@ -32,8 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         $.ajax({
             url: 'http://localhost:8082/rest/getpoints'
         }).done(function(data) {
-            console.log(data.json);
-            console.log(data.features)
+            namePointsArr = data.features
             objectManager.add(data);
         });
 
@@ -55,12 +55,19 @@ document.addEventListener('DOMContentLoaded', () => {
         Map.controls.add(mySearchControl);
 
 
-        function loadBalloonData () {
+        function loadBalloonData (id) {
             var dataDeferred = ymaps.vow.defer();
             function resolveData () {
-                dataDeferred.resolve('Данные балуна');
+                fetch(`url/id=${id}`)
+                    .then(data => data.json())
+                    .then(data => {
+                        dataDeferred.resolve(`Месторождение: ${data.field}
+                        Площадь: ${data.area}
+                        АГЗУ: ${data.AGZU}
+                        ЦЕХ: ${data.workshop}`);
+                    })
             }
-            window.setTimeout(resolveData, 1000);
+            // window.setTimeout(resolveData, 1000);
             return dataDeferred.promise();
         }
 
