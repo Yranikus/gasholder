@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
         $.ajax({
-            url: 'http://localhost:8082/rest/getpoints'
+            url: '../static/scripts/jsons/getpoints.json'
         }).done(function(data) {
             namePointsArr = data.features
             objectManager.add(data);
@@ -56,19 +56,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
         function loadBalloonData (id) {
-            var dataDeferred = ymaps.vow.defer();
+            let dataDeferred = ymaps.vow.defer(),
+                hint = objectManager.objects.getById(id).properties.hintContent,
+                keys = {
+                    field: 'Месторождение',
+                    area: 'Площадь',
+                    workshop: 'ЦЕХ',
+                    agzu: 'АГЗУ'
+                }
+
+
             function resolveData () {
-                fetch(`http://localhost:8082/rest/getdiscription?id=${id}`)
+                let infoBlock = `<div class="preInfoField">&#9679 Точка ${hint}</div><ul class="pointInfoList">`
+                fetch(`../static/scripts/jsons/getDiscription.json`)
                     .then(data => data.json())
                     .then(data => {
-                        dataDeferred.resolve(`<div style="background-color: #6F17AD">Месторождение: ${data.field}<br>
-                        Площадь: ${data.area}<br>
-                        АГЗУ: ${data.AGZU}<br>
-                        ЦЕХ: ${data.workshop}</div>`);
+                        for(let key in data){
+                            console.log(data[key])
+                            if(data[key]){
+                                infoBlock += `<li>${keys[key]}:<br>${data[key]}</li><hr>`
+                            }
+                        }
+                        infoBlock += '</ul>'
+
+                        dataDeferred.resolve(infoBlock);
                     })
             }
             // window.setTimeout(resolveData, 1000);
-            resolveData();
+            resolveData()
             return dataDeferred.promise();
         }
 

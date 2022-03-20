@@ -114,4 +114,27 @@ body {
   width: calc(100% - 100px);
 }
 
+.pointInfoList {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  margin-top: 0.1em;
+  border-radius: 5px;
+  border: rgba(20, 25, 227, 0.5) solid 2px;
+  padding: 0.2em 0.3em;
+  overflow: hidden scroll;
+}
+
+hr{
+  color:red;
+  border: teal solid 1px;
+  height: 0px;
+}
+
+.pointInfoList hr:last-child{
+  display: none;
+}
+.pointInfoBlock {
+
+}
 /*# sourceMappingURL=map.css.map */
