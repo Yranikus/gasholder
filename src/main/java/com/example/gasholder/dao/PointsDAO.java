@@ -3,6 +3,7 @@ package com.example.gasholder.dao;
 
 import com.example.gasholder.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,10 @@ public class PointsDAO {
                 point.getName(),
                 point.getLatitude(),point.getLongitude(), discription.getField(),discription.getArea(),discription.getAGZU(),
                 discription.getWorkshop());
+    }
+
+    public Discription getDiscription(int id){
+        return jdbcTemplate.queryForObject("SELECT field, area, AGZU, workshop FROM points WHERE id= ?", new Object[]{id}, new BeanPropertyRowMapper<>(Discription.class));
     }
 
 

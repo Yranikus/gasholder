@@ -4,8 +4,10 @@ package com.example.gasholder.controllers;
 import com.example.gasholder.dao.PointsDAO;
 import com.example.gasholder.dao.UserDao;
 import com.example.gasholder.entity.ArryOfPoints;
+import com.example.gasholder.entity.Discription;
 import com.example.gasholder.entity.UserEntity;
 import com.example.gasholder.parser.Parcer;
+import com.example.gasholder.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,15 +25,14 @@ public class RestContrrollers {
     @Autowired
     private PointsDAO pointsDAO;
     @Autowired
-    private UserDao userDao;
+    private UserService userService;
     @Autowired
     private Parcer parcer;
 
 
     @GetMapping("user")
     public UserEntity getCurrentUser(){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return userDao.findByLogin(auth.getName());
+        return userService.findByName(SecurityContextHolder.getContext().getAuthentication());
     }
 
     @GetMapping("upload")
@@ -44,6 +45,11 @@ public class RestContrrollers {
         }
     }
 
+
+    @GetMapping("/getdiscription")
+    public Discription getDiscription(@RequestParam int id){
+       return pointsDAO.getDiscription(id);
+    }
 
     @GetMapping("/getpoints")
     public ArryOfPoints getTeams(){
