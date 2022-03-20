@@ -58,16 +58,17 @@ document.addEventListener('DOMContentLoaded', () => {
         function loadBalloonData (id) {
             var dataDeferred = ymaps.vow.defer();
             function resolveData () {
-                fetch(`url/id=${id}`)
+                fetch(`http://localhost:8082/rest/getdiscription?id=${id}`)
                     .then(data => data.json())
                     .then(data => {
-                        dataDeferred.resolve(`Месторождение: ${data.field}
-                        Площадь: ${data.area}
-                        АГЗУ: ${data.AGZU}
-                        ЦЕХ: ${data.workshop}`);
+                        dataDeferred.resolve(`<div style="background-color: #6F17AD">Месторождение: ${data.field}<br>
+                        Площадь: ${data.area}<br>
+                        АГЗУ: ${data.AGZU}<br>
+                        ЦЕХ: ${data.workshop}</div>`);
                     })
             }
             // window.setTimeout(resolveData, 1000);
+            resolveData();
             return dataDeferred.promise();
         }
 

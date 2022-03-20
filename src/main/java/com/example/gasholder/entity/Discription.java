@@ -8,6 +8,9 @@ public class Discription {
     private String workshop;
 
 
+    public Discription() {
+    }
+
     public Discription(String field, String area, String AGZU, String workshop) {
         this.field = field;
         this.area = area;
