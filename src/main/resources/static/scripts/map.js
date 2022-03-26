@@ -136,7 +136,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     field: 'Месторождение',
                     area: 'Площадь',
                     workshop: 'ЦЕХ',
-                    agzu: 'АГЗУ'
+                    agzu: 'АГЗУ',
+                    city: 'Город',
+                    distance : 'Растояние',
+                    direction: 'Направление'
                 }
 
 
