@@ -5,6 +5,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let obj = {},
         namePointsArr = []
 
+    function getCookie(name) {
+        let matches = document.cookie.match(new RegExp(
+            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
 
     function init(){
         Map = new ymaps.Map("map", {
@@ -87,9 +93,10 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
 
+        let workshop = getCookie('workshop');
 
         $.ajax({
-            url: '../testjsons/push.json'
+            url: `/${workshop}`                     //допиши тута запрос на получение точек
         }).done(function(data) {
             objectManager.add(data);
             console.log(data.features);
@@ -145,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             function resolveData () {
                 let infoBlock = `<div class="preInfoField">&#9679 Точка ${hint}</div><ul class="pointInfoList">`
-                fetch(`../testjsons/getDiscription.json`)
+                fetch(`/${id}`)                                       //А тут дописать запрос на описание точки
                     .then(data => data.json())
                     .then(data => {
                         for(let key in data){
