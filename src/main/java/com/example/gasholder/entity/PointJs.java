@@ -6,11 +6,21 @@ public class PointJs {
     private int id;
     private Geometry geometry;
     private Properties properties;
+    private Options options;
 
-    public PointJs( int id, Geometry geometry, Properties properties) {
+    public PointJs(int id, Geometry geometry, Properties properties, Options options) {
         this.id = id;
         this.geometry = geometry;
         this.properties = properties;
+        this.options = options;
+    }
+
+    public Options getOptions() {
+        return options;
+    }
+
+    public void setOptions(Options options) {
+        this.options = options;
     }
 
     public String getType() {

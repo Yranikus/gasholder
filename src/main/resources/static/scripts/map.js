@@ -105,39 +105,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
         //Убрать
 
-        const point = {
-            type: "FeatureCollection",
-            features: [
-          {
-            type: "Feature",
-            id: 0,
-            geometry: {
-              type: "Point",
-              coordinates: [
-                54.7362627463035,
-                56.130677515985994
-            ]
-            },
-            properties: {
-              hintContent: `id: 1818<br/>Месторождение: какое-то<br/>Площадь: Какая-то`
-            },
-            options: {
-                iconLayout: 'default#image',
-                iconImageHref: '../static/img/oil.png',
-                iconImageSize: [60, 45],
-                iconImageOffset: [-18, -12]
-            }
-          }]
-        };
-
-        objectManager.add(JSON.stringify(point));
-
-        console.log(objectManager);
+        // const point = {
+        //     type: "FeatureCollection",
+        //     features: [
+        //   {
+        //     type: "Feature",
+        //     id: 0,
+        //     geometry: {
+        //       type: "Point",
+        //       coordinates: [
+        //         54.7362627463035,
+        //         56.130677515985994
+        //     ]
+        //     },
+        //     properties: {
+        //       hintContent: `id: 1818<br/>Месторождение: какое-то<br/>Площадь: Какая-то`
+        //     },
+        //     options: {
+        //         iconLayout: 'default#image',
+        //         iconImageHref: '../static/img/oil.png',
+        //         iconImageSize: [60, 45],
+        //         iconImageOffset: [-18, -12]
+        //     }
+        //   }]
+        // };
+        //
+        // objectManager.add(JSON.stringify(point));
+        //
+        // console.log(objectManager);
 
         //До сюда
 
         $.ajax({
-            url: 'http://localhost:8888/gasholder/src/main/resources/static/scripts/jsons/getPoints.json/' //`http://localhost:8081/rest/${workshop}`                     //допиши тута запрос на получение точек
+            url: `http://localhost:8081/rest/${workshop}`                     //допиши тута запрос на получение точек
         }).done(function(data) {
             objectManager.add(data);
             console.log(data);
