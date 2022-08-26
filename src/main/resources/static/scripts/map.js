@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
         Map.geoObjects.add(objectManager);
-
+        objectManager.clusters.options.set('preset', 'islands#blackClusterIcons');
 
         console.log(namePointsArr);
 
@@ -59,8 +59,11 @@ document.addEventListener('DOMContentLoaded', () => {
             for (var i = 0, l = this.points.length; i < l; i++) {
                 let point = this.points[i];
 
+                let hintContent = point.properties.hintContent,
+                pointName = hintContent.substring(hintContent.indexOf(" "), hintContent.indexOf("<br/>"));
+
                 if(request.toLowerCase() !== ('id' || 'месторождение' || 'площадь' || ' ' || ':')) {
-                    if (point.properties.hintContent.toLowerCase().indexOf(request.toLowerCase()) != -1) {
+                    if (pointName.toLowerCase().indexOf(request.toLowerCase()) != -1) {
                         points.push(point);
                     }
                 }
@@ -71,10 +74,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 var point = points[i],
                     coords = point.geometry.coordinates,
                     text = point.properties.hintContent;
+
+                    const area = text.substring(text.indexOf("Площадь:"), text.length),
+                          field = text.substring(text.indexOf("<br/>Месторождение: "), text.indexOf("<br/>Площадь:"));
+
                     console.log(point);
                 myPoint = new ymaps.Placemark(coords, {
                     name: text,
-                    description: `Площадь: Месторождение`,                        //Заглушка для описания, по идее должно быть месторождение
+                    description: `Площадь: ${area} Месторождение: ${field}`,                        //Заглушка для описания, по идее должно быть месторождение
                     balloonContentBody: '<p>' + text + '</p>',
                     boundedBy: [coords, coords]
                 });
