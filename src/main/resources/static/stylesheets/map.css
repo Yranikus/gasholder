@@ -137,4 +137,11 @@ hr{
 .pointInfoBlock {
 
 }
+.ymaps-2-1-79-searchbox-button{
+  background-color: #6F17AD !important;
+}
+
+.ymaps-2-1-79-searchbox-button-text{
+  color: white;
+}
 /*# sourceMappingURL=map.css.map */
