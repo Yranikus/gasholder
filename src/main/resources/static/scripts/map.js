@@ -1,9 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    let Map, objectManager, pointsArr;
+    let Map, objectManager;
 
-    let obj = {},
-        namePointsArr = []
+    let namePointsArr = [];
 
     function getCookie(name) {
         let matches = document.cookie.match(new RegExp(
@@ -45,8 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         console.log(namePointsArr);
 
-
-
         function CustomSearchProvider(points) {
             this.points = points;
         }
@@ -61,9 +58,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // Ищет в свойстве text каждого элемента массива.
             for (var i = 0, l = this.points.length; i < l; i++) {
                 let point = this.points[i];
-                console.log('search');
-                if (point.properties.hintContent.toLowerCase().indexOf(request.toLowerCase()) != -1) {
-                    points.push(point);
+
+                if(request.toLowerCase() !== ('id' || 'месторождение' || 'площадь' || ' ' || ':')) {
+                    if (point.properties.hintContent.toLowerCase().indexOf(request.toLowerCase()) != -1) {
+                        points.push(point);
+                    }
                 }
             }
 
@@ -72,16 +71,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 var point = points[i],
                     coords = point.geometry.coordinates,
                     text = point.properties.hintContent;
-
+                    console.log(point);
                 myPoint = new ymaps.Placemark(coords, {
                     name: text,
-                    description: '',                        //Заглушка для описания, по идее должно быть месторождение
+                    description: `Площадь: Месторождение`,                        //Заглушка для описания, по идее должно быть месторождение
                     balloonContentBody: '<p>' + text + '</p>',
                     boundedBy: [coords, coords]
-                }, {
-                    iconLayout: 'default#image',
-                    iconImageHref: 'img/oil.png',
-                    iconImageSize: [30, 30]
                 });
                 geoObjects.add(myPoint)
             }
@@ -107,19 +102,53 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let workshop = getCookie('workshop');
 
+
+        //Убрать
+
+        const point = {
+            type: "FeatureCollection",
+            features: [
+          {
+            type: "Feature",
+            id: 0,
+            geometry: {
+              type: "Point",
+              coordinates: [
+                54.7362627463035,
+                56.130677515985994
+            ]
+            },
+            properties: {
+              hintContent: `id: 1818<br/>Месторождение: какое-то<br/>Площадь: Какая-то`
+            },
+            options: {
+                iconLayout: 'default#image',
+                iconImageHref: '../static/img/oil.png',
+                iconImageSize: [60, 45],
+                iconImageOffset: [-18, -12]
+            }
+          }]
+        };
+
+        objectManager.add(JSON.stringify(point));
+
+        console.log(objectManager);
+
+        //До сюда
+
         $.ajax({
-            url: `http://localhost:8081/rest/${workshop}`                     //допиши тута запрос на получение точек
+            url: 'http://localhost:8888/gasholder/src/main/resources/static/scripts/jsons/getPoints.json/' //`http://localhost:8081/rest/${workshop}`                     //допиши тута запрос на получение точек
         }).done(function(data) {
             objectManager.add(data);
             console.log(data);
-            namePointsArr = data.features
+            namePointsArr = data.features;
 
             let bounds = objectManager.getBounds();
             console.log(bounds);
             bounds = [bounds[0][0] + (bounds[1][0] - bounds[0][0])/2,
-                bounds[0][1] + (bounds[1][1] - bounds[0][1])/2]
+                bounds[0][1] + (bounds[1][1] - bounds[0][1])/2];
 
-            console.log(bounds)
+            console.log(bounds);
             Map.setCenter(bounds, 8, {
                 checkZoomRange: true
             });
@@ -225,7 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sideBar.classList.toggle("active");
         main.classList.toggle("active");
         Map.container.fitToViewport();
-    }
+    };
 });
 
 
