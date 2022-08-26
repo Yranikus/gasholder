@@ -75,8 +75,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     coords = point.geometry.coordinates,
                     text = point.properties.hintContent;
 
-                    const area = text.substring(text.indexOf("Площадь:"), text.length),
-                          field = text.substring(text.indexOf("<br/>Месторождение: "), text.indexOf("<br/>Площадь:"));
+                    const name = text.substring(text.indexOf(" "), text.indexOf("<br/>"));
+                          area = text.substring(text.indexOf("Площадь:") + 8, text.length),
+                          field = text.substring(text.indexOf("<br/>Месторождение: ") + 20, text.indexOf("<br/>Площадь:"));
 
                     console.log(point);
                 myPoint = new ymaps.Placemark(coords, {
