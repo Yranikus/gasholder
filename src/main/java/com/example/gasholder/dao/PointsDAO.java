@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class PointsDAO {
@@ -24,16 +25,36 @@ public class PointsDAO {
     }
 
     public Discription getDiscription(int id){
-        return jdbcTemplate.queryForObject("SELECT field, area, AGZU, workshop FROM points WHERE id= ?", new Object[]{id}, new BeanPropertyRowMapper<>(Discription.class));
+        return jdbcTemplate.queryForObject("SELECT field, area, AGZU, workshop, city, distance, direction, reservior, reservior_distance, reservior_direction " +
+                "FROM points WHERE id= ?", new Object[]{id}, new BeanPropertyRowMapper<>(Discription.class));
     }
 
 
     public ArryOfPoints getPoint(){
-        ArrayList<PointJs> pointJs = (ArrayList<PointJs>) jdbcTemplate.query("SELECT id, name, latitude, longitude FROM points WHERE workshop='ЧЦДНГ-1'", new CustomMapper());
+        ArrayList<PointJs> pointJs = (ArrayList<PointJs>) jdbcTemplate.query("SELECT id, name, latitude, longitude FROM points", new CustomMapper());
         ArryOfPoints arryOfPoints = new ArryOfPoints();
         arryOfPoints.setFeatures(pointJs);
         return arryOfPoints;
     }
 
+    public ArryOfPoints getPointsByWorkshop(String workshop){
+        ArrayList<PointJs> pointJs = (ArrayList<PointJs>) jdbcTemplate.query("SELECT id, name, latitude, longitude FROM points WHERE workshop=?", new Object[]{workshop}, new CustomMapper());
+        ArryOfPoints arryOfPoints = new ArryOfPoints();
+        arryOfPoints.setFeatures(pointJs);
+        return arryOfPoints;
+    }
+
+
+    public List<Point> test(){
+        return jdbcTemplate.query("SELECT id, name, latitude, longitude FROM points", new BeanPropertyRowMapper<>(Point.class));
+    }
+
+    public void saveNearestCity(String name, double distance, String direction, int id){
+        jdbcTemplate.update("UPDATE points SET city=?, distance=?, direction=? WHERE id=?", name,distance,direction,id);
+    }
+
+    public void saveNearestReservoir(String name, double distance, String direction, int id){
+        jdbcTemplate.update("UPDATE points SET reservior=?, reservior_distance=?, reservior_direction=? WHERE id=?", name,distance,direction,id);
+    }
 
 }

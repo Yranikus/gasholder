@@ -7,6 +7,7 @@ import com.example.gasholder.entity.ArryOfPoints;
 import com.example.gasholder.entity.Discription;
 import com.example.gasholder.entity.UserEntity;
 import com.example.gasholder.parser.Parcer;
+import com.example.gasholder.service.OilWellService;
 import com.example.gasholder.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -28,6 +29,8 @@ public class RestContrrollers {
     private UserService userService;
     @Autowired
     private Parcer parcer;
+    @Autowired
+    private OilWellService oilWellService;
 
 
     @GetMapping("user")
@@ -35,26 +38,18 @@ public class RestContrrollers {
         return userService.findByName(SecurityContextHolder.getContext().getAuthentication());
     }
 
-    @GetMapping("upload")
-    public void uploadTeams(){
-        try {
-            parcer.savePoints(new FileInputStream(
-                    "C:\\Users\\yranikus\\Desktop\\gasholder\\src\\test\\java\\com\\example\\gasholder\\test.xlsm"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
     @GetMapping("/getdiscription")
     public Discription getDiscription(@RequestParam int id){
        return pointsDAO.getDiscription(id);
     }
 
     @GetMapping("/getpoints")
-    public ArryOfPoints getTeams(){
-        return pointsDAO.getPoint();
+    public ArryOfPoints getPoints(){
+        return oilWellService.getPoints();
     }
 
-
+    @GetMapping("/{workshop}")
+    public ArryOfPoints getPointByWorkshop(@PathVariable String workshop){
+        return oilWellService.getPointByWorkshop(workshop);
+    }
 }

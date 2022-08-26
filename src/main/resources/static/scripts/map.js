@@ -12,6 +12,13 @@ document.addEventListener('DOMContentLoaded', () => {
         return matches ? decodeURIComponent(matches[1]) : undefined;
     }
 
+    // var myPlacemark = new ymaps.Placemark([55.8, 37.6], {}, {
+    //     preset: 'default#image',
+    //     iconImageHref: '/resources/static/img/oil.png',
+    //     iconImageSize: [30, 30]
+    // });
+
+
     function init(){
         Map = new ymaps.Map("map", {
                 center: [54.73136947666353,55.970855740234335],
@@ -66,12 +73,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     coords = point.geometry.coordinates,
                     text = point.properties.hintContent;
 
-                geoObjects.add(new ymaps.Placemark(coords, {
+                myPoint = new ymaps.Placemark(coords, {
                     name: text,
                     description: '',                        //Заглушка для описания, по идее должно быть месторождение
                     balloonContentBody: '<p>' + text + '</p>',
                     boundedBy: [coords, coords]
-                }));
+                }, {
+                    iconLayout: 'default#image',
+                    iconImageHref: 'img/oil.png',
+                    iconImageSize: [30, 30]
+                });
+                geoObjects.add(myPoint)
             }
 
             deferred.resolve({
@@ -96,10 +108,10 @@ document.addEventListener('DOMContentLoaded', () => {
         let workshop = getCookie('workshop');
 
         $.ajax({
-            url: `/${workshop}`                     //допиши тута запрос на получение точек
+            url: `http://localhost:8081/rest/${workshop}`                     //допиши тута запрос на получение точек
         }).done(function(data) {
             objectManager.add(data);
-            console.log(data.features);
+            console.log(data);
             namePointsArr = data.features
 
             let bounds = objectManager.getBounds();
@@ -146,21 +158,30 @@ document.addEventListener('DOMContentLoaded', () => {
                     agzu: 'АГЗУ',
                     city: 'Город',
                     distance : 'Растояние',
-                    direction: 'Направление'
+                    direction: 'Направление',
+                    reservior: 'Ближайший водоем',
+                    reservior_distance : 'Растояние',
+                    reservior_direction: 'Направление',
                 }
 
 
             function resolveData () {
                 let infoBlock = `<div class="preInfoField">&#9679 Точка ${hint}</div><ul class="pointInfoList">`
-                fetch(`/${id}`)                                       //А тут дописать запрос на описание точки
+                let c = 0;
+                fetch(`http://localhost:8082/rest/getdiscription?id=${id}`)                                       //А тут дописать запрос на описание точки
                     .then(data => data.json())
                     .then(data => {
-                        for(let key in data){
-                            console.log(data[key])
-                            if(data[key]){
-                                infoBlock += `<li>${keys[key]}:<br>${data[key]}</li><hr>`
-                            }
-                        }
+                        infoBlock += `<li>${data['field']}, ${data['area']}, ${data['workshop']}</li><hr>`
+                        infoBlock += `<li>${data['city']}-${data['distance']}км-${data['direction']}</li><hr>`
+                        infoBlock += `<li>${data['reservior']}-${data['reservior_distance']}км-${data['reservior_direction']}</li><hr>`
+                        // for(let key in data){
+                        //     console.log(data[key])
+                        //     if(data[key]){
+                        //         if (c < 3) {
+                        //             infoBlock += `<li>${keys[key]}:<br>${data[key]}</li><hr>`
+                        //         }
+                        //     }
+                        // }
                         infoBlock += '</ul>'
 
                         dataDeferred.resolve(infoBlock);
