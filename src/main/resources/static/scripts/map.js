@@ -75,14 +75,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     coords = point.geometry.coordinates,
                     text = point.properties.hintContent;
 
-                    const name = text.substring(text.indexOf(" "), text.indexOf("<br/>"));
+                    const name = text.substring(text.indexOf(" "), text.indexOf("<br/>")),
                           area = text.substring(text.indexOf("Площадь:") + 8, text.length),
                           field = text.substring(text.indexOf("<br/>Месторождение: ") + 20, text.indexOf("<br/>Площадь:"));
 
                     console.log(point);
                 myPoint = new ymaps.Placemark(coords, {
-                    name: text,
-                    description: `Площадь: ${area} Месторождение: ${field}`,                        //Заглушка для описания, по идее должно быть месторождение
+                    name: name,
+                    description: `Площадь: ${area}, Месторождение: ${field}`,                        //Заглушка для описания, по идее должно быть месторождение
                     balloonContentBody: '<p>' + text + '</p>',
                     boundedBy: [coords, coords]
                 });
