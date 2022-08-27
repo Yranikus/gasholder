@@ -1,5 +1,7 @@
 package com.example.gasholder.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class PointJs {
 
     private String type = "Feature";
@@ -7,12 +9,22 @@ public class PointJs {
     private Geometry geometry;
     private Properties properties;
     private Options options;
+    @JsonIgnore
+    private String name;
 
     public PointJs(int id, Geometry geometry, Properties properties, Options options) {
         this.id = id;
         this.geometry = geometry;
         this.properties = properties;
         this.options = options;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Options getOptions() {

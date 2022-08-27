@@ -63,12 +63,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 pointName = hintContent.substring(hintContent.indexOf(" "), hintContent.indexOf("<br/>"));
 
                 if(request.toLowerCase() !== ('id' || 'месторождение' || 'площадь' || ' ' || ':')) {
-                    if (pointName.toLowerCase().indexOf(request.toLowerCase()) != -1) {
+                    console.log(pointName.toLowerCase().indexOf(request.toLowerCase()));
+                    if (pointName.toLowerCase().indexOf(request.toLowerCase()) === 1) {
                         points.push(point);
                     }
                 }
             }
-
+            points.s
             // Добавляет точки в результирующую коллекцию.
             for (var i = 0, l = points.length; i < l; i++) {
                 var point = points[i],
@@ -77,12 +78,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     const name = text.substring(text.indexOf(" "), text.indexOf("<br/>")),
                           area = text.substring(text.indexOf("Площадь:") + 8, text.length),
-                          field = text.substring(text.indexOf("<br/>Месторождение: ") + 20, text.indexOf("<br/>Площадь:"));
+                          field = text.substring(text.indexOf("<br/>Месторождение: ") + 20, text.indexOf("<br/>Площадь: "));
 
                     console.log(point);
                 myPoint = new ymaps.Placemark(coords, {
                     name: name,
-                    description: `Площадь: ${area}, Месторождение: ${field}`,                        //Заглушка для описания, по идее должно быть месторождение
+                    description: `${area} пл.,` + "\n" +  ` ${field} н.м.р,` + workshop,                        //Заглушка для описания, по идее должно быть месторождение
                     balloonContentBody: '<p>' + text + '</p>',
                     boundedBy: [coords, coords]
                 });
@@ -160,13 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
             Map.setCenter(bounds, 8, {
                 checkZoomRange: true
             });
-
-            // Map.geoObjects.add(new ymaps.Placemark(bounds, {
-            //     balloonContent: '<strong>центр</strong>'
-            // }, {
-            //     preset: 'islands#icon',
-            //     iconColor: 'red'
-            // }))
+            
 
             // Добавляем контрол в верхний левый угол,
             let mySearchControl = new ymaps.control.SearchControl({
@@ -183,6 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
             Map.controls.add(mySearchControl);
             console.log(mySearchControl);
         });
+
 
 
         function loadBalloonData (id) {
@@ -203,22 +199,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
             function resolveData () {
-                let infoBlock = `<div class="preInfoField">&#9679 Точка ${hint}</div><ul class="pointInfoList">`
+                let infoBlock = `<div class="preInfoField">&#9679 Скважина ${hint.substring(hint.indexOf(" "), hint.indexOf("<br/>"))}</div><ul class="pointInfoList">`
                 let c = 0;
-                fetch(`http://localhost:8082/rest/getdiscription?id=${id}`)                                       //А тут дописать запрос на описание точки
+                fetch(`http://localhost:8081/rest/getdiscription?id=${id}`)                                       //А тут дописать запрос на описание точки
                     .then(data => data.json())
                     .then(data => {
-                        infoBlock += `<li>${data['field']}, ${data['area']}, ${data['workshop']}</li><hr>`
-                        infoBlock += `<li>${data['city']}-${data['distance']}км-${data['direction']}</li><hr>`
-                        infoBlock += `<li>${data['reservior']}-${data['reservior_distance']}км-${data['reservior_direction']}</li><hr>`
-                        // for(let key in data){
-                        //     console.log(data[key])
-                        //     if(data[key]){
-                        //         if (c < 3) {
-                        //             infoBlock += `<li>${keys[key]}:<br>${data[key]}</li><hr>`
-                        //         }
-                        //     }
-                        // }
+                        if (data['field'] !== "") {
+                            infoBlock += `<li>${data['field']} н.м.р,<br/>${data['area']} пл.,<br/>${data['workshop']}</li><hr>`
+                        }
+                        else {
+                            infoBlock += `<li>${data['area']} пл., ${data['workshop']}</li><hr>`
+                        }
+                        infoBlock += `<li><img src="img/city.png">${data['city']}-${data['distance']}км-${data['direction']}</li><hr>`
+                        infoBlock += `<li><img src="img/reservior.png">${data['reservior']}-${data['reservior_distance']}км-${data['reservior_direction']}</li><hr>`
                         infoBlock += '</ul>'
 
                         dataDeferred.resolve(infoBlock);

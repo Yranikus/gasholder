@@ -31,14 +31,14 @@ public class PointsDAO {
 
 
     public ArryOfPoints getPoint(){
-        ArrayList<PointJs> pointJs = (ArrayList<PointJs>) jdbcTemplate.query("SELECT id, name, latitude, longitude, field, area FROM points", new CustomMapper());
+        ArrayList<PointJs> pointJs = (ArrayList<PointJs>) jdbcTemplate.query("SELECT id, name, latitude, longitude, field, area FROM points ORDER BY 2 ASC", new CustomMapper());
         ArryOfPoints arryOfPoints = new ArryOfPoints();
         arryOfPoints.setFeatures(pointJs);
         return arryOfPoints;
     }
 
     public ArryOfPoints getPointsByWorkshop(String workshop){
-        ArrayList<PointJs> pointJs = (ArrayList<PointJs>) jdbcTemplate.query("SELECT id, name, latitude, longitude, field, area FROM points WHERE workshop=?", new Object[]{workshop}, new CustomMapper());
+        ArrayList<PointJs> pointJs = (ArrayList<PointJs>) jdbcTemplate.query("SELECT id, name, latitude, longitude, field, area FROM points WHERE workshop=? ORDER BY 2 ASC", new Object[]{workshop}, new CustomMapper());
         ArryOfPoints arryOfPoints = new ArryOfPoints();
         arryOfPoints.setFeatures(pointJs);
         return arryOfPoints;

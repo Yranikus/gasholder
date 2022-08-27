@@ -18,6 +18,7 @@ public class CustomMapper implements RowMapper<PointJs> {
         int[] imgOffset = {-18, -12};
         Options options = new Options("default#image", "img/oil.png", imgSize,imgOffset);
         PointJs pointJs = new PointJs(rs.getInt("id"),geometry,properties, options);
+        pointJs.setName(rs.getString("name"));
         return pointJs;
     }
 }

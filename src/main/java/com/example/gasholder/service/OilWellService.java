@@ -23,6 +23,9 @@ public class OilWellService {
     private CityDAO cityDAO;
     @Autowired
     private ReserviorDAO reserviorDAO;
+    @Autowired
+    private ComparatorOfPoints comparatorOfPoints;
+
 
     public double calculate(double lat1, double lng1, double lat2, double lng2){
             double earthRadius = 6371.0; // miles (or 6371.0 kilometers)
@@ -104,7 +107,9 @@ public class OilWellService {
     }
 
     public ArryOfPoints getPointByWorkshop(String workshop){
-        return pointsDAO.getPointsByWorkshop(workshop);
+        ArryOfPoints arryOfPoints = pointsDAO.getPointsByWorkshop(workshop);
+        arryOfPoints.getFeatures().sort(comparatorOfPoints);
+        return arryOfPoints;
     }
 
 
