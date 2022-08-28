@@ -3,7 +3,24 @@ package com.example.gasholder.entity;
 public class Properties {
 
     private String hintContent;
+    private String iconCaption;
+    private String iconContent;
 
+    public String getIconContent() {
+        return iconContent;
+    }
+
+    public void setIconContent(String iconContent) {
+        this.iconContent = iconContent;
+    }
+
+    public String getIconCaption() {
+        return iconCaption;
+    }
+
+    public void setIconCaption(String iconCaption) {
+        this.iconCaption = iconCaption;
+    }
 
     public Properties() {
     }

@@ -11,11 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return matches ? decodeURIComponent(matches[1]) : undefined;
     }
 
-    // var myPlacemark = new ymaps.Placemark([55.8, 37.6], {}, {
-    //     preset: 'default#image',
-    //     iconImageHref: '/resources/static/img/oil.png',
-    //     iconImageSize: [30, 30]
-    // });
 
 
     function init(){
@@ -81,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
                           field = text.substring(text.indexOf("<br/>Месторождение: ") + 20, text.indexOf("<br/>Площадь: "));
 
                     console.log(point);
-                myPoint = new ymaps.Placemark(coords, {
+                    myPoint = new ymaps.Placemark(coords, {
                     name: name,
                     description: `${area} пл.,` + "\n" +  ` ${field} н.м.р,` + workshop,                        //Заглушка для описания, по идее должно быть месторождение
                     balloonContentBody: '<p>' + text + '</p>',
@@ -146,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
         //До сюда
 
         $.ajax({
-            url: `http://localhost:8081/rest/${workshop}`                     //допиши тута запрос на получение точек
+            url: `http://localhost:1223/rest/${workshop}`                     //допиши тута запрос на получение точек
         }).done(function(data) {
             objectManager.add(data);
             console.log(data);
@@ -201,11 +196,11 @@ document.addEventListener('DOMContentLoaded', () => {
             function resolveData () {
                 let infoBlock = `<div class="preInfoField">&#9679 Скважина ${hint.substring(hint.indexOf(" "), hint.indexOf("<br/>"))}</div><ul class="pointInfoList">`
                 let c = 0;
-                fetch(`http://localhost:8081/rest/getdiscription?id=${id}`)                                       //А тут дописать запрос на описание точки
+                fetch(`http://localhost:1223/rest/getdiscription?id=${id}`)                                       //А тут дописать запрос на описание точки
                     .then(data => data.json())
                     .then(data => {
                         if (data['field'] !== "") {
-                            infoBlock += `<li>${data['field']} н.м.р,<br/>${data['area']} пл.,<br/>${data['workshop']}</li><hr>`
+                            infoBlock += `<li>${data['area']} пл.,${data['field']} н.м.р,<br/>${data['workshop']}</li><hr>`
                         }
                         else {
                             infoBlock += `<li>${data['area']} пл., ${data['workshop']}</li><hr>`

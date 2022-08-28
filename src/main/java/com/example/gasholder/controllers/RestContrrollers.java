@@ -43,10 +43,10 @@ public class RestContrrollers {
        return pointsDAO.getDiscription(id);
     }
 
-    @GetMapping("/getpoints")
-    public ArryOfPoints getPoints(){
-        return oilWellService.getPoints();
-    }
+//    @GetMapping("/getpoints")
+//    public ArryOfPoints getPoints(){
+//        return oilWellService.getPoint();
+//    }
 
     @GetMapping("/{workshop}")
     public ArryOfPoints getPointByWorkshop(@PathVariable String workshop){

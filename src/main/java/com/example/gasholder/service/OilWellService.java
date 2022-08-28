@@ -8,9 +8,6 @@ import com.example.gasholder.entity.Discription;
 import com.example.gasholder.entity.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -102,12 +99,15 @@ public class OilWellService {
         return pointsDAO.getDiscription(id);
     }
 
-    public ArryOfPoints getPoints(){
-        return pointsDAO.getPoint();
-    }
 
     public ArryOfPoints getPointByWorkshop(String workshop){
-        ArryOfPoints arryOfPoints = pointsDAO.getPointsByWorkshop(workshop);
+        ArryOfPoints arryOfPoints = null;
+        if (workshop.equals("all")){
+            arryOfPoints = pointsDAO.getPoint();
+        }
+        else {
+            arryOfPoints = pointsDAO.getPointsByWorkshop(workshop);
+        }
         arryOfPoints.getFeatures().sort(comparatorOfPoints);
         return arryOfPoints;
     }
