@@ -179,6 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
         function loadBalloonData (id) {
             let dataDeferred = ymaps.vow.defer(),
                 hint = objectManager.objects.getById(id).properties.hintContent,
+                pointCoords = objectManager.objects.getById(id).geometry.coordinates,
                 keys = {
                     field: 'Месторождение',
                     area: 'Площадь',
@@ -207,6 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                         infoBlock += `<li><img src="img/city.png">${data['city']}-${data['distance']}км-${data['direction']}</li><hr>`
                         infoBlock += `<li><img src="img/reservior.png">${data['reservior']}-${data['reservior_distance']}км-${data['reservior_direction']}</li><hr>`
+                        infoBlock += `infoBlock += 'Нажмите на координаты, чтобы скопировать<br>[<span class="coordsField">pointCoords</span>]
                         infoBlock += '</ul>'
 
                         dataDeferred.resolve(infoBlock);
@@ -241,6 +243,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     ymaps.ready(init);
 
+    document.addEventListener('click', (e) => {
+
+        if(e.target.classList.contains('coordsField')){
+            var copyTextarea = document.createElement("textarea");
+            copyTextarea.style.position = "fixed";
+            copyTextarea.style.opacity = "0";
+
+            console.log(e.target.innerText);
+            copyTextarea.textContent = e.target.innerText;
+
+            document.body.appendChild(copyTextarea);
+            copyTextarea.select();
+            document.execCommand("copy");
+            document.body.removeChild(copyTextarea);    
+        }
+    
+    });
 
     let closeSBBtn = document.querySelector(".expandSidebarBtn")
     let sideBar = document.querySelector(".sidebar")
