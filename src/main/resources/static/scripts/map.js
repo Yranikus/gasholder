@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                         infoBlock += `<li><img src="img/city.png">${data['city']}-${data['distance']}км-${data['direction']}</li><hr>`
                         infoBlock += `<li><img src="img/reservior.png">${data['reservior']}-${data['reservior_distance']}км-${data['reservior_direction']}</li><hr>`
-                        infoBlock += `infoBlock += 'Нажмите на координаты, чтобы скопировать<br>[<span class="coordsField">pointCoords</span>]
+                        infoBlock += `Нажмите на координаты, чтобы скопировать<br><span class="coordsField">${[pointCoords]}</span>`
                         infoBlock += '</ul>'
 
                         dataDeferred.resolve(infoBlock);
