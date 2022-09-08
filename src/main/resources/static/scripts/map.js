@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     geoObjects = new ymaps.GeoObjectCollection();
 
 
-                let res = $.ajax(`http://37.230.112.84:80/rest/search/${request}`, {
+                let res = $.ajax(`http://localhost:9091/rest/search/${request}`, {
                     success: function (data){
                         var points = data.features
 
@@ -120,64 +120,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Возвращает объект-обещание.
                 return deferred.promise();
 
-
-
-            // Ищет в свойстве text каждого элемента массива.
-            // for (var i = 0, l = this.points.length; i < l; i++) {
-            //     let point = this.points[i];
-            //     let hintContent = point.properties.hintContent,
-            //     pointName = hintContent.substring(hintContent.indexOf(" "), hintContent.indexOf("<br/>"));
-            //     if(request.toLowerCase() !== ('id' || 'месторождение' || 'площадь' || ' ' || ':')) {
-            //         if (pointName.toLowerCase().indexOf(request.toLowerCase()) === 1) {
-            //             points.push(point);
-            //         }
-            //     }
-            // }
-            // Добавляет точки в результирующую коллекцию.
-
-
-
         };
 
 
         let workshop = getCookie('workshop');
 
-
-        //Убрать
-
-        // const point = {
-        //     type: "FeatureCollection",
-        //     features: [
-        //   {
-        //     type: "Feature",
-        //     id: 0,
-        //     geometry: {
-        //       type: "Point",
-        //       coordinates: [
-        //         54.7362627463035,
-        //         56.130677515985994
-        //     ]
-        //     },
-        //     properties: {
-        //       hintContent: `id: 1818<br/>Месторождение: какое-то<br/>Площадь: Какая-то`
-        //     },
-        //     options: {
-        //         iconLayout: 'default#image',
-        //         iconImageHref: '../static/img/oil.png',
-        //         iconImageSize: [60, 45],
-        //         iconImageOffset: [-18, -12]
-        //     }
-        //   }]
-        // };
-        //
-        // objectManager.add(JSON.stringify(point));
-        //
-        // console.log(objectManager);
-
-        //До сюда
-
         $.ajax({
-            url: `http://37.230.112.84:80/rest/${workshop}`                     //допиши тута запрос на получение точек
+            url: `http://localhost:9091/rest/${workshop}`                     //допиши тута запрос на получение точек
         }).done(function(data) {
             objectManager.add(data);
             console.log(data);
@@ -234,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
             function resolveData () {
                 let infoBlock = `<div class="preInfoField">&#9679 Скважина ${hint.substring(hint.indexOf(" "), hint.indexOf("<br/>"))}</div><ul class="pointInfoList">`
                 let c = 0;
-                fetch(`http://37.230.112.84:80/rest/getdiscription?id=${id}`)                                       //А тут дописать запрос на описание точки
+                fetch(`http://localhost:9091/rest/getdiscription?id=${id}`)                                       //А тут дописать запрос на описание точки
                     .then(data => data.json())
                     .then(data => {
 
