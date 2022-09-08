@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    const getUrlUserInfo = 'http://localhost:1223/rest/user',
-          getURLPoints = 'http://localhost:1223/rest/points';
+    const getUrlUserInfo = 'http://37.230.112.84:80/rest/user';
+          // getURLPoints = 'http://localhost:1223/rest/points';
 
     const infoBlock = document.querySelector('.userInfoBlock')
 
@@ -29,23 +29,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadingMessage = ldMessage()
     infoBlock.insertAdjacentElement('afterbegin', loadingMessage);
 
-    const pointList = document.querySelector('.pointList'),
-          loadingListElement = document.createElement('li');
-    loadingListElement.classList.add('pointInfoField');
-    loadingListElement.insertAdjacentElement("afterbegin", ldMessage());
-    pointList.insertAdjacentElement('afterbegin', loadingListElement);
+    // const pointList = document.querySelector('.pointList'),
+    //       loadingListElement = document.createElement('li');
+    // loadingListElement.classList.add('pointInfoField');
+    // loadingListElement.insertAdjacentElement("afterbegin", ldMessage());
+    // pointList.insertAdjacentElement('afterbegin', loadingListElement);
 
 
 //Функции заполения полей информации о пользователе в зависимости от ответа от сервера
     function fillInfoFields(data) {
         loadingMessage.remove()
 
-        const fioField = document.querySelector('#fio'),
-            divisionField = document.querySelector('#division'),
-            districtField = document.querySelector('#district')
+        // const fioField = document.querySelector('#fio'),
+           const departmentField = document.querySelector('#division');
+            // districtField = document.querySelector('#district')
 
-        fioField.innerText = `${data.login}`;
-        divisionField.innerText = data.department;
+        // fioField.innerText = `${data.login}`;
+        departmentField.innerText = data.department;
     }
 
     function errorInfoResponse() {
@@ -83,80 +83,80 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 //Класс одного элемента списка
-    class pointCard {
-        constructor(pointObj, parentSelector, id, ...classes) {
-            this.holeNumber = pointObj.HoleNumber;
-            this.field = pointObj.Field;
-            this.area = pointObj.Area;
-            this.agzu = pointObj.AGZU;
-            this.workshop = pointObj.Workshop;
-            this.parent = document.querySelector(parentSelector);
-            this.id = "pointInfo" + id
-        }
-
-        render() {
-            this.parent.insertAdjacentHTML("beforeend",
-                `<li class="preInfoField">
-                        &#9679 Точка ${this.holeNumber}
-                    </li>
-                    <li class="pointInfoField">
-                        <ul class="poinInfoList" id="${this.id}">
-                        </ul>
-                    </li>
-                    `);
-
-            let pointInfoList = document.querySelector(`#${this.id}`);
-
-            if (this.field !== undefined) {
-                pointInfoList.insertAdjacentHTML('beforeend',
-                    `<li class>
-                            Месторождение:<br>${this.field}
-                        </li>`)
-            }
-
-            if (this.area !== undefined) {
-                pointInfoList.insertAdjacentHTML('beforeend',
-                    `<li>
-                            Площадь:<br>${this.area}
-                        </li>`)
-            }
-
-            if (this.agzu !== undefined) {
-                pointInfoList.insertAdjacentHTML('beforeend',
-                    `<li>
-                            АГЗУ:<br>${this.agzu}
-                        </li>`)
-            }
-
-            if (this.workshop !== undefined) {
-                pointInfoList.insertAdjacentHTML('beforeend',
-                    `<li>
-                            Цех:<br>${this.workshop}
-                        </li>`)
-            }
-        }
-    }
+//     class pointCard {
+//         constructor(pointObj, parentSelector, id, ...classes) {
+//             this.holeNumber = pointObj.HoleNumber;
+//             this.field = pointObj.Field;
+//             this.area = pointObj.Area;
+//             this.agzu = pointObj.AGZU;
+//             this.workshop = pointObj.Workshop;
+//             this.parent = document.querySelector(parentSelector);
+//             this.id = "pointInfo" + id
+//         }
+//
+//         render() {
+//             this.parent.insertAdjacentHTML("beforeend",
+//                 `<li class="preInfoField">
+//                         &#9679 Точка ${this.holeNumber}
+//                     </li>
+//                     <li class="pointInfoField">
+//                         <ul class="poinInfoList" id="${this.id}">
+//                         </ul>
+//                     </li>
+//                     `);
+//
+//             let pointInfoList = document.querySelector(`#${this.id}`);
+//
+//             if (this.field !== undefined) {
+//                 pointInfoList.insertAdjacentHTML('beforeend',
+//                     `<li class>
+//                             Месторождение:<br>${this.field}
+//                         </li>`)
+//             }
+//
+//             if (this.area !== undefined) {
+//                 pointInfoList.insertAdjacentHTML('beforeend',
+//                     `<li>
+//                             Площадь:<br>${this.area}
+//                         </li>`)
+//             }
+//
+//             if (this.agzu !== undefined) {
+//                 pointInfoList.insertAdjacentHTML('beforeend',
+//                     `<li>
+//                             АГЗУ:<br>${this.agzu}
+//                         </li>`)
+//             }
+//
+//             if (this.workshop !== undefined) {
+//                 pointInfoList.insertAdjacentHTML('beforeend',
+//                     `<li>
+//                             Цех:<br>${this.workshop}
+//                         </li>`)
+//             }
+//         }
+//     }
 
 //Функции заполения списка точек в зависимости от ответа от сервера
-    function fillPointList(data) {
-
-        data.forEach((item, key) => {
-            new pointCard(item, '.pointList', key).render()
-        });
-
-    }
+//     function fillPointList(data) {
+//
+//         data.forEach((item, key) => {
+//             new pointCard(item, '.pointList', key).render()
+//         });
+//
+//     }
 
 //Point fetch get и заполнение списка точек
-    fetch(getURLPoints)
-        .then(data => data.json())
-        .then(function (data) {
-            loadingListElement.remove()
-            fillPointList(data);
-            console.log('Request succeeded with JSON response', data);
-        })
-        .catch(function (error) {
-            loadingListElement.remove()
-            console.log('Request failed', error);
-        });
+//     fetch(getURLPoints)
+//         .then(data => data.json())
+//         .then(function (data) {
+//             loadingListElement.remove()
+//             fillPointList(data);
+//             console.log('Request succeeded with JSON response', data);
+//         })
+//         .catch(function (error) {
+//             loadingListElement.remove()
+//             console.log('Request failed', error);
+//         });
 
 });

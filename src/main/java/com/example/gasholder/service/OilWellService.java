@@ -112,5 +112,18 @@ public class OilWellService {
         return arryOfPoints;
     }
 
+    public ArryOfPoints searchPointsByName(String name, String workshop){
+        ArryOfPoints arryOfPoints = null;
+        if (workshop.equals("all")){
+            arryOfPoints = pointsDAO.getPointsByNameLike(name);
+        }
+        else {
+            arryOfPoints = pointsDAO.getPointsByNameLikeAndWorkshop(workshop,name);
+        }
+        arryOfPoints.getFeatures().sort(comparatorOfPoints);
+        System.out.println(arryOfPoints.getFeatures().toString());
+        return arryOfPoints;
+    }
+
 
 }

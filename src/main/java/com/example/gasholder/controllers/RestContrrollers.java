@@ -52,4 +52,11 @@ public class RestContrrollers {
     public ArryOfPoints getPointByWorkshop(@PathVariable String workshop){
         return oilWellService.getPointByWorkshop(workshop);
     }
+
+    @GetMapping("/search/{request}")
+    public ArryOfPoints SearchPointsByWorkshopAndName(@PathVariable String request, @CookieValue String workshop){
+        System.out.println("fdjhsfgjh");
+        return oilWellService.searchPointsByName(request, workshop);
+    }
+
 }

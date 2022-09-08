@@ -12,7 +12,8 @@ public class CustomMapper implements RowMapper<PointJs> {
         Properties properties = new Properties();
         properties.setIconContent(rs.getString("name"));
         properties.setIconCaption(rs.getString("name"));
-        properties.setHintContent("id: " + rs.getString("name") + "<br/>Месторождение: " + rs.getString("field") + "<br/>Площадь: " + rs.getString("area") );
+        properties.setHintContent("id: " + rs.getString("name") + "<br/>Месторождение: " + rs.getString("field") + "<br/>Площадь: " + rs.getString("area")
+        +"<br/>Цех: "  + rs.getString("workshop"));
         Geometry geometry = new Geometry();
         geometry.setCoordinates(rs.getDouble("latitude"),0);
         geometry.setCoordinates(rs.getDouble("longitude"),1);

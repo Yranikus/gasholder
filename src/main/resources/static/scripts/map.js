@@ -51,39 +51,18 @@ document.addEventListener('DOMContentLoaded', () => {
             var points = [];
 
             // Ищет в свойстве text каждого элемента массива.
-            for (var i = 0, l = this.points.length; i < l; i++) {
-                let point = this.points[i];
-
-                let hintContent = point.properties.hintContent,
-                pointName = hintContent.substring(hintContent.indexOf(" "), hintContent.indexOf("<br/>"));
-
-                if(request.toLowerCase() !== ('id' || 'месторождение' || 'площадь' || ' ' || ':')) {
-                    console.log(pointName.toLowerCase().indexOf(request.toLowerCase()));
-                    if (pointName.toLowerCase().indexOf(request.toLowerCase()) === 1) {
-                        points.push(point);
-                    }
-                }
-            }
-            points.s
+            // for (var i = 0, l = this.points.length; i < l; i++) {
+            //     let point = this.points[i];
+            //     let hintContent = point.properties.hintContent,
+            //     pointName = hintContent.substring(hintContent.indexOf(" "), hintContent.indexOf("<br/>"));
+            //     if(request.toLowerCase() !== ('id' || 'месторождение' || 'площадь' || ' ' || ':')) {
+            //         if (pointName.toLowerCase().indexOf(request.toLowerCase()) === 1) {
+            //             points.push(point);
+            //         }
+            //     }
+            // }
             // Добавляет точки в результирующую коллекцию.
-            for (var i = 0, l = points.length; i < l; i++) {
-                var point = points[i],
-                    coords = point.geometry.coordinates,
-                    text = point.properties.hintContent;
 
-                    const name = text.substring(text.indexOf(" "), text.indexOf("<br/>")),
-                          area = text.substring(text.indexOf("Площадь:") + 8, text.length),
-                          field = text.substring(text.indexOf("<br/>Месторождение: ") + 20, text.indexOf("<br/>Площадь: "));
-
-                    console.log(point);
-                    myPoint = new ymaps.Placemark(coords, {
-                    name: name,
-                    description: `${area} пл.,` + "\n" +  ` ${field} н.м.р,` + workshop,                        //Заглушка для описания, по идее должно быть месторождение
-                    balloonContentBody: '<p>' + text + '</p>',
-                    boundedBy: [coords, coords]
-                });
-                geoObjects.add(myPoint)
-            }
 
             deferred.resolve({
                 // Геообъекты поисковой выдачи.
@@ -141,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
         //До сюда
 
         $.ajax({
-            url: `http://localhost:1223/rest/${workshop}`                     //допиши тута запрос на получение точек
+            url: `http://37.230.112.84:80/rest/${workshop}`                     //допиши тута запрос на получение точек
         }).done(function(data) {
             objectManager.add(data);
             console.log(data);
@@ -197,14 +176,14 @@ document.addEventListener('DOMContentLoaded', () => {
             function resolveData () {
                 let infoBlock = `<div class="preInfoField">&#9679 Скважина ${hint.substring(hint.indexOf(" "), hint.indexOf("<br/>"))}</div><ul class="pointInfoList">`
                 let c = 0;
-                fetch(`http://localhost:1223/rest/getdiscription?id=${id}`)                                       //А тут дописать запрос на описание точки
+                fetch(`http://37.230.112.84:80/rest/getdiscription?id=${id}`)                                       //А тут дописать запрос на описание точки
                     .then(data => data.json())
                     .then(data => {
                         if (data['field'] !== "") {
-                            infoBlock += `<li>${data['area']} пл.,${data['field']} н.м.р,<br/>${data['workshop']}</li><hr>`
+                            infoBlock += `<li>${data['area']} пл.,<br/>${data['field']} н.м.р,<br/>${data['workshop']}</li><hr>`
                         }
                         else {
-                            infoBlock += `<li>${data['area']} пл., ${data['workshop']}</li><hr>`
+                            infoBlock += `<li>${data['area']} пл.,<br/> ${data['workshop']}</li><hr>`
                         }
                         infoBlock += `<li><img src="img/city.png">${data['city']}-${data['distance']}км-${data['direction']}</li><hr>`
                         infoBlock += `<li><img src="img/reservior.png">${data['reservior']}-${data['reservior_distance']}км-${data['reservior_direction']}</li><hr>`

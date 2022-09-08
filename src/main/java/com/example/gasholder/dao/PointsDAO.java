@@ -31,19 +31,36 @@ public class PointsDAO {
 
 
     public ArryOfPoints getPoint(){
-        ArrayList<PointJs> pointJs = (ArrayList<PointJs>) jdbcTemplate.query("SELECT id, name, latitude, longitude, field, area FROM points ORDER BY 2 ASC", new CustomMapper());
+        ArrayList<PointJs> pointJs = (ArrayList<PointJs>) jdbcTemplate.query("SELECT id, name, latitude, longitude, field, area, workshop FROM points ORDER BY 2 ASC", new CustomMapper());
         ArryOfPoints arryOfPoints = new ArryOfPoints();
         arryOfPoints.setFeatures(pointJs);
         return arryOfPoints;
     }
 
     public ArryOfPoints getPointsByWorkshop(String workshop){
-        ArrayList<PointJs> pointJs = (ArrayList<PointJs>) jdbcTemplate.query("SELECT id, name, latitude, longitude, field, area FROM points WHERE workshop=? ORDER BY 2 ASC", new Object[]{workshop}, new CustomMapper());
+        ArrayList<PointJs> pointJs = (ArrayList<PointJs>) jdbcTemplate.query("SELECT id, name, latitude, longitude, field, area, workshop FROM points WHERE workshop=? ORDER BY 2 ASC", new Object[]{workshop}, new CustomMapper());
         ArryOfPoints arryOfPoints = new ArryOfPoints();
         arryOfPoints.setFeatures(pointJs);
         return arryOfPoints;
     }
 
+    public ArryOfPoints getPointsByNameLikeAndWorkshop(String workshop, String name){
+        String serachName = name + "%%";
+        ArrayList<PointJs> pointJs = (ArrayList<PointJs>) jdbcTemplate.query("SELECT id, name, latitude, longitude, field, area, workshop FROM points WHERE workshop=? AND name LIKE ?",
+                new Object[]{workshop, serachName}, new CustomMapper());
+        ArryOfPoints arryOfPoints = new ArryOfPoints();
+        arryOfPoints.setFeatures(pointJs);
+        return arryOfPoints;
+    }
+
+    public ArryOfPoints getPointsByNameLike(String name){
+        String serachName = name + "%%";
+        ArrayList<PointJs> pointJs = (ArrayList<PointJs>) jdbcTemplate.query("SELECT id, name, latitude, longitude, field, area, workshop FROM points WHERE name LIKE ?",
+                new Object[]{serachName}, new CustomMapper());
+        ArryOfPoints arryOfPoints = new ArryOfPoints();
+        arryOfPoints.setFeatures(pointJs);
+        return arryOfPoints;
+    }
 
     public List<Point> test(){
         return jdbcTemplate.query("SELECT id, name, latitude, longitude FROM points", new BeanPropertyRowMapper<>(Point.class));

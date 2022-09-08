@@ -15,7 +15,7 @@ public class ComparatorOfPoints implements Comparator<PointJs> {
     }
 
     private int getNummericSubstr(String name){
-        Pattern p = Pattern.compile("\\b(\\d{1,4})([А-я]{1,4})(?=,*|\\b)");
+        Pattern p = Pattern.compile("\\b(\\d{1,6})([А-я]{1,4})(?=,*|\\b)");
         Matcher m = p.matcher(name);
         try  {
             m.find();
