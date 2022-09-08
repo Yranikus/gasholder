@@ -209,7 +209,7 @@ img {
   border: 1px solid #6F17AD;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
-  z-index: 10000;
+  z-index: 10010;
   background-color: whitesmoke;
   transition: top 0.5s;
 }
