@@ -37,7 +37,28 @@ document.addEventListener('DOMContentLoaded', () => {
         Map.geoObjects.add(objectManager);
         objectManager.clusters.options.set('preset', 'islands#blackClusterIcons');
 
-        console.log(namePointsArr);
+        MyIconContentLayout = ymaps.templateLayoutFactory.createClass(
+            '<div>' +
+            '<div class="pointName"> $[properties.iconContent]' +
+            '</div>'+
+            '</div>'
+        )
+
+        Map.events.add('boundschange', () => {
+            const zoom = Map.getZoom();
+            if(zoom >= 18){
+                objectManager.options.set("clusterize", false);
+            }
+            else{
+                objectManager.options.set("clusterize", true);
+            }
+        })
+
+
+        objectManager.objects.options.set("iconContentLayout", MyIconContentLayout)
+        objectManager.objects.options.set("iconContentOffset", [5, -15])
+
+        // console.log(namePointsArr);
 
         function CustomSearchProvider(points) {
             this.points = points;
@@ -45,10 +66,67 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Провайдер ищет по полю text стандартным методом String.ptototype.indexOf.
         CustomSearchProvider.prototype.geocode = function (request, options) {
-            var deferred = new ymaps.vow.defer(),
-                geoObjects = new ymaps.GeoObjectCollection();
 
-            var points = [];
+                var deferred = new ymaps.vow.defer(),
+                    geoObjects = new ymaps.GeoObjectCollection();
+
+                let searchManager = new ymaps.ObjectManager({
+                    // Чтобы метки начали кластеризоваться, выставляем опцию.
+                    clusterize: true,
+                    geoObjectOpenBalloonOnClick: true,
+                    clusterOpenBalloonOnClick: false
+                });
+
+                let res = $.ajax(`http://37.230.112.84:80/rest/search/${request}`, {
+                    success: function (data){
+                        var points = data.features
+
+                        for (var i = 0, l = points.length; i < l; i++) {
+                            var point = points[i],
+                                coords = point.geometry.coordinates,
+                                text = point.properties.hintContent;
+
+                            const name = text.substring(text.indexOf(" "), text.indexOf("<br/>")),
+                                area = text.substring(text.indexOf("Площадь:") + 8, text.indexOf("<br/>Цех: ")),
+                                field = text.substring(text.indexOf("<br/>Месторождение: ") + 20, text.indexOf("<br/>Площадь: "))
+                            workshopj = text.substring(text.indexOf("<br/>Цех: ") + 9, text.length);
+                            myPoint = new ymaps.Placemark(coords, {
+                                name: name,
+                                description: `${area} пл.,` + "\n" +  ` ${field} н.м.р,` + `${workshopj}`,                        //Заглушка для описания, по идее должно быть месторождение
+                                balloonContentBody: '<p>' + text + '</p>',
+                                boundedBy: [coords, coords]
+                            });
+                            geoObjects.add(myPoint)
+                        }
+
+                        // console.log('geoObjects', geoObjects);
+                        // console.log('geoObjects.lenght', geoObjects.getLength());
+                        //
+                        // console.log('searchManager.objects', searchManager.objects);
+
+                        deferred.resolve({
+                            // Геообъекты поисковой выдачи.
+                            geoObjects: geoObjects,
+                            // Метаинформация ответа.
+                            metaData: {
+                                geocoder: {
+                                    // Строка обработанного запроса.
+                                    request: request,
+                                    // Количество найденных результатов.
+                                    found: geoObjects.getLength()
+                                }
+                            }
+                        });
+                    }
+                });
+
+
+
+
+                // Возвращает объект-обещание.
+                return deferred.promise();
+
+
 
             // Ищет в свойстве text каждого элемента массива.
             // for (var i = 0, l = this.points.length; i < l; i++) {
@@ -64,22 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Добавляет точки в результирующую коллекцию.
 
 
-            deferred.resolve({
-                // Геообъекты поисковой выдачи.
-                geoObjects: geoObjects,
-                // Метаинформация ответа.
-                metaData: {
-                    geocoder: {
-                        // Строка обработанного запроса.
-                        request: request,
-                        // Количество найденных результатов.
-                        found: geoObjects.getLength()
-                    }
-                }
-            });
 
-            // Возвращает объект-обещание.
-            return deferred.promise();
         };
 
 
@@ -187,7 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                         infoBlock += `<li><img src="img/city.png">${data['city']}-${data['distance']}км-${data['direction']}</li><hr>`
                         infoBlock += `<li><img src="img/reservior.png">${data['reservior']}-${data['reservior_distance']}км-${data['reservior_direction']}</li><hr>`
-                        infoBlock += `Нажмите на координаты, чтобы скопировать<br><span class="coordsField">${[pointCoords]}</span>`
+                        infoBlock += `Нажмите, чтобы скопировать<br><button class="coordsField">${[pointCoords.join(' ')]}</button>`
                         infoBlock += '</ul>'
 
                         dataDeferred.resolve(infoBlock);
@@ -235,7 +298,14 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.appendChild(copyTextarea);
             copyTextarea.select();
             document.execCommand("copy");
-            document.body.removeChild(copyTextarea);    
+            document.body.removeChild(copyTextarea);
+
+            let copyModal = document.querySelector(".copyModal");
+            copyModal.classList.add("modalActive");
+
+            setTimeout(()=>{
+                copyModal.classList.remove("modalActive");
+            }, 500)
         }
     
     });
