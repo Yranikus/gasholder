@@ -187,13 +187,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     .then(data => data.json())
                     .then(data => {
 
-                        function navRedirect(coords){
-                            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i
-                                .test(navigator.userAgent)) {
-                                window.location.href = `yandexnavi://build_route_on_map?lat_to=${coords[0]}&lon_to=${coords[1]}`;
-                            } else {
-                                window.location.href = `https://yandex.ru/maps/?whatshere[point]=${coords}`;
-                            }
+                        let navHref = '';
+
+                        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i
+                            .test(navigator.userAgent)) {
+                            navHref = `yandexnavi://build_route_on_map?lat_to=${pointCoords[0]}&lon_to=${pointCoords[1]}`;
+                        } else {
+                            navHref =  `https://yandex.ru/maps/?whatshere[point]=${pointCoords}`;
                         }
 
                         if (data.field !== "") {
@@ -204,11 +204,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                         infoBlock += `<li><img src="img/city.png">${data['city']}-${data['distance']}км-${data['direction']}</li><hr>
                                       <li><img src="img/reservior.png">${data['reservior']}-${data['reservior_distance']}км-${data['reservior_direction']}
-                                      </li><hr>Нажмите, чтобы скопировать<br>
-                                        <div class="coordsField">
-                                            <button class="copyCoordBtn coordBtn">${[pointCoords.join(' ')]}</button>
-                                            <button class="navButton coordBtn" onclick="navRedirect(pointCoords)">Перейти в<br>навигатор</button>
-                                        </div>
+                                      </li>
+                                      <hr>
+                                      <li class="coordsField">
+                                        <button class="copyCoordsBtn coordsBtn">Скопировать<br>координаты</button>
+                                        <a href=${navHref} target="_blank" class="navButton coordsBtn"><img src="https://yastatic.net/s3/front-maps-static/maps-front-maps/static/v30/icons/core/navi-24.svg" alt="icon"></a>
+                                      </li> 
                                       </ul>`
 
                         dataDeferred.resolve(infoBlock);

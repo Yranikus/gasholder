@@ -125,8 +125,8 @@ body {
   margin-top: 0.1em;
   border-radius: 5px;
   border: rgba(20, 25, 227, 0.5) solid 2px;
-  padding: 0.2em 0.3em;
   overflow: hidden scroll;
+  padding: 4px;
 }
 
 .pointInfoList li{
@@ -141,6 +141,7 @@ hr{
   color:red;
   border: teal solid 1px;
   height: 0px;
+
 }
 
 .pointInfoList hr:last-child{
@@ -184,26 +185,34 @@ img {
 }
 
 .coordsField{
+  box-sizing: border-box;
   width: inherit;
   padding: 0.3em;
+  display: flex;
+  justify-content: space-between !important;
 }
 
-.coordBtn{
 
-}
-
-.copyCoordBtn{
+.coordsBtn{
   border: 1px solid teal;
   border-radius: 0.2em;
-  padding: 0.3em;
-  margin: 0.2em;
-  width: 100%;
-  transform: rotate(0deg);
-  transition: all 0.1s;
+  background-color: whitesmoke;
 }
 
-.copyCoordBtn:active{
-  transform: rotate(180deg);
+
+.navButton{
+  width: min-content;
+  display: flex;
+  align-items: center;
+
+}
+
+.copyCoordsBtn{
+  width:85%;
+}
+
+
+.coordsBtn:active{
   background-color: #6F17AD;
 }
 
