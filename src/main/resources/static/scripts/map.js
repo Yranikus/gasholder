@@ -70,12 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 var deferred = new ymaps.vow.defer(),
                     geoObjects = new ymaps.GeoObjectCollection();
 
-                let searchManager = new ymaps.ObjectManager({
-                    // Чтобы метки начали кластеризоваться, выставляем опцию.
-                    clusterize: true,
-                    geoObjectOpenBalloonOnClick: true,
-                    clusterOpenBalloonOnClick: false
-                });
 
                 let res = $.ajax(`http://37.230.112.84:80/rest/search/${request}`, {
                     success: function (data){
@@ -195,10 +189,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 bounds[0][1] + (bounds[1][1] - bounds[0][1])/2];
 
             console.log(bounds);
-            Map.setCenter(bounds, 8, {
-                checkZoomRange: true
-            });
-            
+            if(workshop !== "all"){
+                Map.setCenter(bounds, 8, {
+                    checkZoomRange: true
+                });
+            }
 
             // Добавляем контрол в верхний левый угол,
             let mySearchControl = new ymaps.control.SearchControl({
@@ -242,16 +237,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 fetch(`http://37.230.112.84:80/rest/getdiscription?id=${id}`)                                       //А тут дописать запрос на описание точки
                     .then(data => data.json())
                     .then(data => {
-                        if (data['field'] !== "") {
+
+                        var geolocation = ymaps.geolocationж
+
+
+                        function navRedirect(coords){
+                            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i
+                                .test(navigator.userAgent)) {
+                                window.location.href = `yandexnavi://build_route_on_map?lat_to=${coords[0]}&lon_to=${coords[1]}`;
+                            } else {
+                                let r = result.bjects.getBounds()[0]
+                                window.location.href = `https://yandex.ru/maps/?whatshere[point]=${coords}`
+                            }
+                        }
+
+                        if (data.field !== "") {
                             infoBlock += `<li>${data['area']} пл.,<br/>${data['field']} н.м.р,<br/>${data['workshop']}</li><hr>`
                         }
                         else {
                             infoBlock += `<li>${data['area']} пл.,<br/> ${data['workshop']}</li><hr>`
                         }
-                        infoBlock += `<li><img src="img/city.png">${data['city']}-${data['distance']}км-${data['direction']}</li><hr>`
-                        infoBlock += `<li><img src="img/reservior.png">${data['reservior']}-${data['reservior_distance']}км-${data['reservior_direction']}</li><hr>`
-                        infoBlock += `Нажмите, чтобы скопировать<br><button class="coordsField">${[pointCoords.join(' ')]}</button>`
-                        infoBlock += '</ul>'
+                        infoBlock += `<li><img src="img/city.png">${data['city']}-${data['distance']}км-${data['direction']}</li><hr>
+                                      <li><img src="img/reservior.png">${data['reservior']}-${data['reservior_distance']}км-${data['reservior_direction']}
+                                      </li><hr>Нажмите, чтобы скопировать<br>
+                                        <div class="coordsField">
+                                            <button class="copyCoordBtn">${[pointCoords.join(' ')]}</button>
+                                            <button class="navButton" onclick="navRedirect(pointCoords)">Перейти в<br>навигатор</button>
+                                        </div>
+                                      </ul>`
 
                         dataDeferred.resolve(infoBlock);
                     })

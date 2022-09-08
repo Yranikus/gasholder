@@ -184,6 +184,11 @@ img {
 }
 
 .coordsField{
+
+}
+
+
+.copyCoordBtn{
   border: 1px solid teal;
   border-radius: 0.2em;
   padding: 0.3em;
@@ -193,10 +198,12 @@ img {
   transition: all 0.1s;
 }
 
-.coordsField:active{
+.copyCoordBtn:active{
   transform: rotate(180deg);
   background-color: #6F17AD;
 }
+
+
 
 .copyModal{
   box-sizing: border-box;
