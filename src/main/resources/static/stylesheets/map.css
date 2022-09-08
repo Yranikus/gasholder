@@ -184,9 +184,13 @@ img {
 }
 
 .coordsField{
-
+  width: inherit;
+  padding: 0.3em;
 }
 
+.coordBtn{
+
+}
 
 .copyCoordBtn{
   border: 1px solid teal;

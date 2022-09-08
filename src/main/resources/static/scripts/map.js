@@ -238,16 +238,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     .then(data => data.json())
                     .then(data => {
 
-                        var geolocation = ymaps.geolocationж
-
-
                         function navRedirect(coords){
                             if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i
                                 .test(navigator.userAgent)) {
                                 window.location.href = `yandexnavi://build_route_on_map?lat_to=${coords[0]}&lon_to=${coords[1]}`;
                             } else {
-                                let r = result.bjects.getBounds()[0]
-                                window.location.href = `https://yandex.ru/maps/?whatshere[point]=${coords}`
+                                window.location.href = `https://yandex.ru/maps/?whatshere[point]=${coords}`;
                             }
                         }
 
@@ -261,8 +257,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                       <li><img src="img/reservior.png">${data['reservior']}-${data['reservior_distance']}км-${data['reservior_direction']}
                                       </li><hr>Нажмите, чтобы скопировать<br>
                                         <div class="coordsField">
-                                            <button class="copyCoordBtn">${[pointCoords.join(' ')]}</button>
-                                            <button class="navButton" onclick="navRedirect(pointCoords)">Перейти в<br>навигатор</button>
+                                            <button class="copyCoordBtn coordBtn">${[pointCoords.join(' ')]}</button>
+                                            <button class="navButton coordBtn" onclick="navRedirect(pointCoords)">Перейти в<br>навигатор</button>
                                         </div>
                                       </ul>`
 
