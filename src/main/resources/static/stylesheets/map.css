@@ -208,6 +208,7 @@ img {
 }
 
 .copyCoordsBtn{
+  height: inherit;
   width:85%;
 }
 

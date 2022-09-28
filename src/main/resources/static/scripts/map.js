@@ -183,18 +183,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             function resolveData () {
                 let infoBlock = `<div class="preInfoField">&#9679 Скважина ${hint.substring(hint.indexOf(" "), hint.indexOf("<br/>"))}</div><ul class="pointInfoList">`
-                let c = 0;
-                fetch(`http://localhost:9091/rest/getdiscription?id=${id}`)                                       //А тут дописать запрос на описание точки
+                fetch(`http://37.230.112.84:80/rest/getdiscription?id=${id}`)                                       //А тут дописать запрос на описание точки
                     .then(data => data.json())
                     .then(data => {
 
                         let navHref = '';
 
+
                         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i
                             .test(navigator.userAgent)) {
-                            navHref = `yandexnavi://build_route_on_map?lat_to=${pointCoords[0]}&lon_to=${pointCoords[1]}`;
+                            navHref = `yandexnavi://build_route_on_map?lat_to=${pointCoords[1]}&lon_to=${pointCoords[0]}`;
                         } else {
-                            navHref =  `https://yandex.ru/maps/?whatshere[point]=${pointCoords}`;
+                            navHref =  `https://yandex.ru/maps/?whatshere[point]=${pointCoords.reverse()}`;
                         }
 
                         if (data.field !== "") {
@@ -208,10 +208,11 @@ document.addEventListener('DOMContentLoaded', () => {
                                       </li>
                                       <hr>
                                       <li class="coordsField">
-                                        <button class="copyCoordsBtn coordsBtn">Скопировать<br>координаты</button>
+                                        <button class="copyCoordsBtn coordsBtn">Скопировать:<br>${pointCoords.reverse()}</button>
                                         <a href=${navHref} target="_blank" class="navButton coordsBtn"><img src="https://yastatic.net/s3/front-maps-static/maps-front-maps/static/v30/icons/core/navi-24.svg" alt="icon"></a>
                                       </li> 
                                       </ul>`
+
 
                         dataDeferred.resolve(infoBlock);
                     })
@@ -245,30 +246,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
     ymaps.ready(init);
 
-    document.addEventListener('click', (e) => {
+       document.addEventListener('click', (e)=> {
 
-        if(e.target.classList.contains('coordsField')){
-            var copyTextarea = document.createElement("textarea");
-            copyTextarea.style.position = "fixed";
-            copyTextarea.style.opacity = "0";
+           if(e.target.classList.contains('copyCoordsBtn')){
+               var copyTextarea = document.createElement("textarea");
+               copyTextarea.style.position = "fixed";
+               copyTextarea.style.opacity = "0";
 
-            console.log(e.target.innerText);
-            copyTextarea.textContent = e.target.innerText;
+               console.log(e.target.innerText);
+               let inner = e.target.innerText,
+                   coords = inner.substr(inner.indexOf(":")+2).replace(",", " ")
+               console.log(coords)
+               copyTextarea.textContent = coords;
+               document.body.appendChild(copyTextarea);
+               copyTextarea.select();
+               document.execCommand("copy");
+               document.body.removeChild(copyTextarea);
 
-            document.body.appendChild(copyTextarea);
-            copyTextarea.select();
-            document.execCommand("copy");
-            document.body.removeChild(copyTextarea);
+               let copyModal = document.querySelector(".copyModal");
+               copyModal.classList.add("modalActive");
 
-            let copyModal = document.querySelector(".copyModal");
-            copyModal.classList.add("modalActive");
+               setTimeout(()=>{
+                   copyModal.classList.remove("modalActive");
+               }, 500)
+           }
+       });
 
-            setTimeout(()=>{
-                copyModal.classList.remove("modalActive");
-            }, 500)
-        }
-    
-    });
+
 
     let closeSBBtn = document.querySelector(".expandSidebarBtn")
     let sideBar = document.querySelector(".sidebar")
