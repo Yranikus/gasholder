@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+
     function init(){
         Map = new ymaps.Map("map", {
                 center: [54.73136947666353,55.970855740234335],
@@ -71,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     geoObjects = new ymaps.GeoObjectCollection();
 
 
-                let res = $.ajax(`http://localhost:9091/rest/search/${request}`, {
+                let res = $.ajax(`http://37.230.112.84:80/rest/search/${request}`, {
                     success: function (data){
                         var points = data.features
 
@@ -126,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let workshop = getCookie('workshop');
 
         $.ajax({
-            url: `http://localhost:9091/rest/${workshop}`                     //допиши тута запрос на получение точек
+            url: `http://37.230.112.84:80/rest/${workshop}`                     //допиши тута запрос на получение точек
         }).done(function(data) {
             objectManager.add(data);
             console.log(data);

@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    const getUrlUserInfo = 'http://localhost:9091/rest/user';
+    const getUrlUserInfo = 'http://37.230.112.84:80/rest/user';
           // getURLPoints = 'http://localhost:1223/rest/points';
 
     const infoBlock = document.querySelector('.userInfoBlock')
